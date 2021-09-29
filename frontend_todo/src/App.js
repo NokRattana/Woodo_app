@@ -1,38 +1,74 @@
 import React, {Component} from "react";
 import './App.css';
+import Modal from "./components/Modal";
+import axios from "axios";
 
-const TaskItem = [
-  {
-    "id": 1,
-        "title": "My portfolio django.",
-        "subject": "Portfolio",
-        "detail": "My portfolio django.",
-        "done": false
-  },
-  {
-    "id": 3,
-        "title": "Re-build webdesign",
-        "subject": "Webstore app",
-        "detail": "re-build nokstore.",
-        "done": false
-  },
-  {
-    "id": 4,
-        "title": "New TODO",
-        "subject": "Woodo",
-        "detail": "do Woodo stuff here!",
-        "done": false
-  },
-];
+const taskItems = [
+]
+
+
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       viewDone: false,
-      taskList: TaskItem,
+      activeItem: {
+        title: "",
+        detail: "",
+        done: "",
+
+      },
+      taskList: []
+    
+    
     };
   }
+
+  componentDidMount() {
+    this.refreshList();
+  }
+
+  refreshList = () => {
+    axios
+      .get('http://localhost:8000/task/')
+      .then((res) => this.setState({ taskList: res.data}))
+      .catch((err) => console.log(err));
+  };
+
+  
+  toggle = () => {
+    this.setState({ modal: !this.state.modal});
+  };
+
+  handleSubmit = (item) => {
+    this.toggle();
+
+    if (item.id) {
+      axios
+        .put('http://localhost:8000/task/${item.id}/', item)
+        .then((res) => this.refreshList());
+      return;
+    }
+    axios
+      .post('http://localhost:8000/task/', item)
+      .then((res) => this.refreshList());
+
+
+    
+  };
+
+  handleDelete = (item) => {
+    axios
+      .delete('/task/${item.id}/')
+      .then((res) => this.refreshList());
+  
+  };
+
+  createItem = () => {
+    const item = { title: "", detail: "", done: false};
+    this.setState ({ activeItem: item, modal: !this.state.modal});
+  };
 
 
 displayDone = (status) => {
@@ -45,52 +81,67 @@ displayDone = (status) => {
 
 renderTabList = () => {
   return (
-    <div className="nav nav-tabs">
-      <span
-      className={this.state.viewDone ? "nav-link active" : "nav - link"} 
+    <div className="App-btn-gr">
+
+      
+      <button
+      className={this.state.viewDone ? "button-link active" : "button btn-success - link"} 
       onClick={() => this.displayDone(true)}
       >
+        
       Task Done!
-      </span>
-      <span
-      className={this.state.viewDone ? "nav-link" : "nav - link active"} 
+      </button>
+      
+     
+      
+      <button
+      className={this.state.viewDone ? "button-link" : "button btn-danger - link active"} 
       onClick={() => this.displayDone(false)}
       >
       Not Done!
-      </span>
+      </button>
+      
+    
 
     </div>
   );
 };
 
-renderItem = () => {
+renderItems = () => {
   const { viewDone} = this.state;
-  const newItem = this.state.taskList.filter(
-    (item) => item.done == viewDone
+  const newItems = this.state.taskList.filter(
+    (item) => item.done === viewDone
   );
-  return newItem.map((item) => (
+  return newItems.map((item) => (
     <li
     key={item.id}
-    className="list-group-item d-item justify-content-between align-item-center"
+    className="list-group-item d-flex justify-content-between align-item-center"
     >
+
     <span
-      className="" 
-      title=""
+      className= {'task-title mr-2 $ {this.state.viewDone ? "done -task" : ""}'}
+      title={item.detail}
       
       >
       {item.title}
        </span>
+   
        <span>
          <button
-         className="btn btn-secondary mr-2"
+         className="App-btn-re"
+         onClick={this.createItem}
+         
          >
+           
            Edit
 
          </button>
          <button
-         className="btn btn-danger"
+         className="App-btn-re"
+         onClick={() => this.handleDelete(item)}
+         
          >
-           Edit
+           Delete
         </button>
       </span>
   </li>
@@ -106,19 +157,28 @@ render() {
             <div className="card p-3">
               <div className="mb-4">
                 <button
-                className="btn-btn-primary"
+                className="App-btn-re"
+                onClick={this.createItem}
                 >
-                  ADD TASK
+                  Add New Task
                 </button>
+
               </div>
               {this.renderTabList()}
               <ul className="list-group list-group-flush border-top-0">
-                {this.renderItem()}
+                {this.renderItems()}
               </ul>
             </div>
           </div>
         </div>
-      </main>
+        {this.state.modal ? (
+          <Modal
+            activeItem={this.state.activeItem}
+            toggle={this.toggle}
+            onSave={this.state.handleSubmit} 
+            />
+        ) : null}
+     </main>
     );
   }
 }

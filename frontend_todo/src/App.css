@@ -14,19 +14,50 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #4e7940;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: rgb(237, 247, 236);
 }
 
 .App-link {
   color: #61dafb;
 }
+
+.App-btn-gr {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 2px;
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 4px;
+  transition: ease-in-out 0.3s;
+  color: #fff;
+  background: #1a7234;
+  text-transform: uppercase;
+}
+
+.App-btn-re {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 2px;
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 4px;
+  transition: ease-in-out 0.3s;
+  color: rgb(34, 46, 27);
+  background: #e6ece8;
+  text-transform: uppercase;
+  
+}
+
+
 
 @keyframes App-logo-spin {
   from {
@@ -35,4 +66,16 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/* Styles to the body */
+.App-body {
+  background-color: #fafdf9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: rgb(15, 94, 8);
 }

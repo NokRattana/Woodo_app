@@ -6,6 +6,10 @@ router = routers.DefaultRouter()
 router.register('task', views.TaskView)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', views.home, name='home'),
+    path('delete/<task_id>/', views.delete, name='delete'),
+ 
+    
+    path('task/', include(router.urls)),
     
 ]

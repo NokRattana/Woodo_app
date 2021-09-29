@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+ {% block content%}
+ <div class="container">
+ {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissable" role="alert">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      
+ <strong>{{message}}</strong>
+</div>
+
+      
+
+    {% endfor%}
+ {% endif %}
+</div><br/><br/><br/><br/>
+<!-- table -->
+<div class="container">
+<nav class="navbar navbar-expand-lg navbar-light bg-success">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">TODO TASK</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+        </li>
+      </ul>
+      <!--Form-->
+      <form class="d-flex" method="POST">
+      {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="New Task" aria-label="Search" name="title">
+        <button class="btn btn-danger" type="submit">ADD</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+
+ 
+  {% if all_title %}
+  <table class="table table-success table-striped table-borderless table-responsive">
+      {% for task in all_title %}
+        {% if task.done%}
+        <tr>
+        <td  class="text-decoration-line-through">{{task.title}}</td>
+        
+     
+      <td><button type="button" class="btn btn-outline-warning btn-sm">{{task.done}}</a></button> </td>
+      <td><button type="button" class="btn btn-outline-success btn-sm"> <a href="{% url 'delete' task.id %}">Delete</a></button></td>  
+      </tr> 
+      {% else %}
+      <tr>  
+      
+      <td><strong>{{task.title}}</strong></td>
+      
+      
+      <td><button type="button" class="btn btn-warning btn-sm">{{task.done}}</a></button> </td>
+      <td><button type="button" class="btn btn-success btn-sm"><a herf="{% url 'delete' task.id %}">Delete</a></button></td>  
+          
+      </tr>
+      {% endif %}
+     
+      
+        
+      {% endfor %}
+    </table>
+  {% endif %}
+
+
+ 
+    
+
+  
+
+
+
+ 
+
+</div>
+
+{% endblock %}
+
+<button type="button" class="btn btn-primary btn-sm">Small button</button>
+<button type="button" class="btn btn-secondary btn-sm">Small button</button>
