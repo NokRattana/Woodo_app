@@ -18,10 +18,10 @@ def home(request):
             messages.success(request, ('New Task has been Added successfully!'))
             return render(request, 'home.html', {'all_title': all_title})
 
-            
     else:
         all_title = Task.objects.all
         return render(request, 'home.html', {'all_title': all_title})
+
 
 
 def delete(request, task_id):
@@ -30,30 +30,36 @@ def delete(request, task_id):
     messages.success(request, ('Task has been deleted successfully!'))
     return redirect ('home')
 
+def cross_off(request, task_id):
+    title = Task.objects.get(pk=task_id)
+    title.done = True
+    title.save()
+    return redirect ('home')
 
-
-
-
-
-
-
-
-
-
+def uncross(request, task_id):
+    title = Task.objects.get(pk=task_id)
+    title.done = False
+    title.save()
+    return redirect ('home')
 
 def edit(request, task_id):
     if request.method == 'POST':
-        form = TaskForm(request.POST or None)
+        title = Task.objects.get(pk=task_id)
+        form = TaskForm(request.POST or None, instance=title)
 
-        if form-is_valid():
-            form.savr()
-            all_titles = Task.objects.all
-            messages.success(request, ('Task has been edit'))
-            return render(request, 'edit.html', {'all_titles' : all_titles})
+        if form.is_valid():
+            form.save()
+            messages.success(request, ('New Task has been Edit successfully!'))
+            return redirect('home')
 
-        else:
-            all_titles = Task.objects.all
-            return render(request, 'edit.html', {'all_titles': all_titles})
+    else:
+        title = Task.objects.get(pk=task_id)
+        return render(request, 'edit.html', {'title': title})
+
+
+
+
+
 
 
 

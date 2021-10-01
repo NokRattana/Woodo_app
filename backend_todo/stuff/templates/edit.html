@@ -1,8 +1,20 @@
 {% extends 'base.html'%}
 
-{% block title%}Edit{% block title%}
+{% block title%}Edit{% endblock%}
 
 {% block content%}
+<div class="container">
+    {% if title %}
+        <form class="d-flex" method="POST">
+      {% csrf_token %}
+        <input class="form-control me-2" type="search" placeholder="{{title.title}}" 
+        value="{{title.title}}" aria-label="Search" name="title">
 
+        <input type="hidden" value="{{title.done}}" name="done">
+        <button class="btn btn-danger" type="submit">Edit</button>
+      </form>
+
+    {% endif %}
+</div>
 
 {% endblock %}

@@ -4,18 +4,7 @@
 
  {% block content%}
  <div class="container">
- {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-warning alert-dismissable" role="alert">
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      
- <strong>{{message}}</strong>
-</div>
 
-      
-
-    {% endfor%}
- {% endif %}
 </div><br/><br/><br/><br/>
 <!-- table -->
 <div class="container">
@@ -30,23 +19,22 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
+            Features
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="#">Add Task</a></li>
+            <li><a class="dropdown-item" href="#">Change</a></li>
+            <li><a class="dropdown-item" href="#">Delete</a></li>
+            <li><a class="dropdown-item" href="#">Login</a></li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+
           </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
+        
+
+        
       </ul>
       <!--Form-->
       <form class="d-flex" method="POST">
@@ -59,36 +47,48 @@
 </nav>
 
 
- 
-  {% if all_title %}
-  <table class="table table-success table-striped table-borderless table-responsive">
-      {% for task in all_title %}
-        {% if task.done%}
-        <tr>
-        <td  class="text-decoration-line-through">{{task.title}}</td>
-        
-     
-      <td><button type="button" class="btn btn-outline-warning btn-sm">{{task.done}}</a></button> </td>
-      <td><button type="button" class="btn btn-outline-success btn-sm"> <a href="{% url 'delete' task.id %}">Delete</a></button></td>  
-      </tr> 
-      {% else %}
-      <tr>  
-      
-      <td><strong>{{task.title}}</strong></td>
-      
-      
-      <td><button type="button" class="btn btn-warning btn-sm">{{task.done}}</a></button> </td>
-      <td><button type="button" class="btn btn-success btn-sm"><a herf="{% url 'delete' task.id %}">Delete</a></button></td>  
-          
-      </tr>
-      {% endif %}
-     
-      
-        
-      {% endfor %}
-    </table>
-  {% endif %}
+ <div class="container">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-warning alert-dismissable" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <strong>{{message}}</strong>
+                            </div>
 
+
+
+                        {% endfor%}
+                    {% endif %}
+                </div>
+                        {% if all_title %}
+
+                        <table class="table table-success table-striped table-borderless table-responsive">
+                            {% for task in all_title %}
+                                {% if task.done %}
+
+
+
+                                <tr class="table table-success">
+                                    <td class="text-decoration-line-through"> <a href="{% url 'edit' task.id %}">{{task.title}}</a></td>
+                                        <td><a button type="button" class="btn btn-outline-success btn-sm" href="{% url 'uncross' task.id %}">Done!</a></button></td>
+
+                                    <td><a button type="button" class="btn btn-outline-success btn-sm" href="{% url 'delete' task.id %}">Delete</a></button></td>
+                                </tr>
+                        {% else %}
+                                <tr>
+                                    <td><strong><a href="{% url 'edit' task.id %}">{{task.title}}</a></strong></td>
+                                    <td><a button type="button" class="btn btn-warning btn-sm" href="{% url 'cross_off' task.id %}">Cross</a></button></td>
+
+                                    <td><a button type="button" class="btn btn-success btn-sm" href="{% url 'delete' task.id %}">Delete</a></td>
+                                  </tr>
+                        {% endif %}
+
+
+
+                        {% endfor %}
+                    </table>
+
+                    {% endif %}
 
  
     
@@ -103,5 +103,3 @@
 
 {% endblock %}
 
-<button type="button" class="btn btn-primary btn-sm">Small button</button>
-<button type="button" class="btn btn-secondary btn-sm">Small button</button>
